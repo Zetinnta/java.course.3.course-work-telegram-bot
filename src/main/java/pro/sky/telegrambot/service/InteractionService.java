@@ -20,7 +20,7 @@ public class InteractionService {
         this.interactionRepository = interactionRepository;
     }
 
-    public Interaction addResponse(Interaction interaction) {
+    public Interaction addInteraction(Interaction interaction) {
         if (interactionRepository.findReplyByRequest(interaction.getRequest()).isEmpty()) {
             return interactionRepository.save(interaction);
         } else {
@@ -28,9 +28,9 @@ public class InteractionService {
         }
     }
 
-    //public Interaction updateResponse
+    //public Interaction updateInteraction
 
-    public Collection<Interaction> getAllResponses() {
+    public Collection<Interaction> getAllInteractions() {
         Collection<Interaction> responseList = interactionRepository.findAll();
         if (responseList.isEmpty()) {
             throw new ResponseNotFoundException("There is no such response");

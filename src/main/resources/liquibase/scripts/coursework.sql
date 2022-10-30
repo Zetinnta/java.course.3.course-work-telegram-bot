@@ -7,9 +7,9 @@
 CREATE TABLE notification_task
 (
     id SERIAL PRIMARY KEY,
-    chat_id integer;
+    chat_id integer,
     notification TEXT NOT NULL,
-    time TIMESTAMP
+    time TIMESTAMP,
     reply BOOLEAN DEFAULT FALSE
 );
 
@@ -19,7 +19,7 @@ CREATE TABLE interaction
 (
     id SERIAL PRIMARY KEY,
     request TEXT,
-    reply TEXT NOT NULL
+    response TEXT NOT NULL
 );
 
 -- changeSet: ydeev: 2
@@ -30,8 +30,7 @@ CREATE INDEX time_index ON notification_task (time);
 
 -- add some basic requests into table interaction
 
-INSERT INTO interaction (request, reply)
+INSERT INTO interaction (request, response)
 VALUES
        ('/sup', 'Bot by Shatoshi is here. Use command /help for further information'),
-       ('/help', 'Note that I was made at bench scale so be patient, please.
-       To start the Bot (me) type command /start');
+       ('/help', 'Note that I was made at bench scale, so be patient, please. To start the Bot (me) type command /start');

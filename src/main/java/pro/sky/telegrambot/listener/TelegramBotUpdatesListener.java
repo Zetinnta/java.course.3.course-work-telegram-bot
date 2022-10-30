@@ -3,6 +3,8 @@ package pro.sky.telegrambot.listener;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.response.SendResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +42,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         this.telegramBot = telegramBot;
     }
 
-    private Collection<Interaction> allRequests;
+    private Collection<Interaction> allInteractions;
     private String message;
 
     static Locale current = Locale.getDefault();
@@ -50,9 +52,9 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     @PostConstruct
     public void init() {
         telegramBot.setUpdatesListener(this);
-        allRequests = interactionService.getAllPossibleInteractions();
+        allInteractions = interactionService.getAllPossibleInteractions();
         boolean expected = false;
-        for (Interaction interaction : allRequests) {
+        for (Interaction interaction : allInteractions) {
             if (interaction.getRequest().equals("/help")) {
                 message = interaction.getResponse();
                 expected = true;
@@ -70,10 +72,30 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             logger.info("Processing update: {}", update);
             //update.message().text();
             //update.message().chat().id();
-
+            String receivedMessage = update.message().text();
+            if (receivedMessage.startsWith("/")) {
+                boolean expected = false;
+                for (Interaction interaction : allInteractions) {
+                    if (receivedMessage.equalsIgnoreCase(interaction.getRequest())) {
+                        expected = true;
+                        responseTelegramBot(update, interaction.getResponse());
+                    }
+                }
+                if (!expected) {
+                    responseTelegramBot(update, "Illegal command. Use /help for more information.");
+                }
+            }
             // Process your updates here
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
+    }
+
+    public void responseTelegramBot(Update update, String response) {
+        SendMessage sentMessage = new SendMessage(update.message().chat().id(), response);
+        SendResponse sentResponse = telegramBot.execute(sentMessage);
+        if (!sentResponse.isOk()) {
+            logger.error("An error occured when the method *responseTelegramBot* was invoked.");
+        }
     }
 
 }

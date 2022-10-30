@@ -11,6 +11,5 @@ import java.util.ArrayList;
 public interface NotificationTaskRepository extends JpaRepository<NotificationTask, Long> {
 
     boolean existsByNotificationAndChatIdAndTime(String notification, Long chatId, LocalDateTime time);
-    ArrayList<NotificationTask> findAllByTime(LocalDateTime time);
-    ArrayList<NotificationTask> findNotificationTaskByTimeBeforeAndReply(LocalDateTime time, boolean reply);
+    ArrayList<NotificationTask> findAllByTime(LocalDateTime localDateTime);
 }

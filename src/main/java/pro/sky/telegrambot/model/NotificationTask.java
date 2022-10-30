@@ -15,20 +15,17 @@ public class NotificationTask {
     private Long chatId;
     private String notification;
     private LocalDateTime time;
-    private boolean reply;
 
-    public NotificationTask(Long chatId, String notification, LocalDateTime time, boolean reply) {
+    public NotificationTask(Long chatId, String notification, LocalDateTime time) {
         this.chatId = chatId;
         this.notification = notification;
         this.time = time;
-        this.reply = reply;
     }
 
     public NotificationTask() {
         chatId = 0L;
         notification = "";
         time = LocalDateTime.now();
-        reply = false;
     }
 
     public Long getId() {
@@ -57,14 +54,6 @@ public class NotificationTask {
 
     public void setTime(LocalDateTime time) {
         this.time = time;
-    }
-
-    public boolean isReply() {
-        return reply;
-    }
-
-    public void setReply(boolean reply) {
-        this.reply = reply;
     }
 
     @Override

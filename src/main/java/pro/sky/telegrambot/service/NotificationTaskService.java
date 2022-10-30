@@ -30,10 +30,6 @@ public class NotificationTaskService {
         return notificationTaskRepository.findAllByTime(time);
     }
 
-    public List<NotificationTask> findNotificationTaskByTimeBeforeAndReply(LocalDateTime time, boolean reply) {
-        return notificationTaskRepository.findNotificationTaskByTimeBeforeAndReply(time, reply);
-    }
-
     public void saveNotificationTask(NotificationTask notificationTask) {
         notificationTaskRepository.save(notificationTask);
     }
